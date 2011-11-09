@@ -25,6 +25,7 @@ class CellprofilerDev < Formula
   depends_on 'gfortran'
   # libjpeg is built universal 32/64 by brew
   depends_on 'libjpeg'
+  depends_on 'pkg-config' # missing on Snow Leopard?
 
   # These are all modified to make sure they are universal.  In the
   # future, brew might allow us to have dependencies with options.
@@ -123,6 +124,9 @@ unset CFLAGS CXXFLAGS LDFLAGS
 
 # useful below
 export HBPREFIX=`${HOMEBREW_BREW_FILE} --prefix`
+
+# Make sure we can find pkg-config if it's not installed anywhere but in CPhomebrew.
+PATH=$PATH:${HBPREFIX}/bin
 
 virtualenv -p /Library/Frameworks/Python.framework/Versions/2.7/bin/python --no-site-packages ${1}/cpdev
 
