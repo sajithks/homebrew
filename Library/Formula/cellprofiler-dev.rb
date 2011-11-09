@@ -164,6 +164,8 @@ cd ${1}/cpdev/PIL_build
 cd PIL-1.1.7
 /usr/bin/sed -i "" "s@^TIFF_ROOT = None@TIFF_ROOT=libinclude('${HBPREFIX}')@;s@^JPEG_ROOT = None@JPEG_ROOT=libinclude('${HBPREFIX}')@" setup.py
 ../../bin/python setup.py build_ext build install
+# this version doesn't include the PIL.pth, which we should not rely on, anyway.
+/bin/echo "PIL" > ${1}/cpdev/lib/python2.7/site-packages/PIL.pth
 # We won't bother cleaning up, for now, as having the PIL build directory around later may be useful.
 cd ${1}/cpdev/bin
 
@@ -171,6 +173,7 @@ cd ${1}/cpdev/bin
 ./pip install numpy
 ./pip install scipy
 ./pip install Cython
+./pip install nose
 
 # h5py
 HDF5_DIR=`${HOMEBREW_BREW_FILE} --prefix libhdf5-universal` ./pip install h5py
