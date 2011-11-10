@@ -68,7 +68,7 @@ class CellprofilerDev < Formula
 
     virtualenv_version=`virtualenv --version`
     if not $?.success?
-      onoe 'Failure running virtualenv --version (is it installed)'
+      onoe 'Failure running virtualenv --version'
       exit 1
     end
 
@@ -90,7 +90,7 @@ class CellprofilerDev < Formula
     system "/bin/sh", "./setup.sh", "#{prefix}"
     (bin+"activate-cpdev").write <<-EOS.undent
     #!/bin/sh
-    . #{prefix}/cpdev/bin/activate
+    . "#{prefix}"/cpdev/bin/activate
     EOS
     test
   end
@@ -115,6 +115,8 @@ end
 __END__
 #!/bin/bash -v
 
+# XXX - TODO: all of these should be moved to the script above, to get better debugging.
+
 # die on errors
 set -e
 set -o pipefail
@@ -125,13 +127,10 @@ unset CFLAGS CXXFLAGS LDFLAGS
 # useful below
 export HBPREFIX=`${HOMEBREW_BREW_FILE} --prefix`
 
-# Make sure we can find pkg-config if it's not installed anywhere but in CPhomebrew.
-PATH=$PATH:${HBPREFIX}/bin
+virtualenv -p /Library/Frameworks/Python.framework/Versions/2.7/bin/python --no-site-packages "${1}"/cpdev
 
-virtualenv -p /Library/Frameworks/Python.framework/Versions/2.7/bin/python --no-site-packages ${1}/cpdev
-
-. ${1}/cpdev/bin/activate
-cd ${1}/cpdev/bin
+. "${1}"/cpdev/bin/activate
+cd "${1}"/cpdev/bin
 
 # Create a 32-bit python (we need it for installing matplotlib in 32-bit land)
 /usr/bin/lipo ./python -thin i386 -output ./python32
@@ -139,7 +138,7 @@ cd ${1}/cpdev/bin
 # get a 32-bit framework build of python into the environment
 /bin/cat > ./pythonw32 <<EOF
 #!/bin/bash
-PYTHONHOME=${VIRTUAL_ENV} /usr/bin/arch -arch i386 /Library/Frameworks/Python.framework/Versions/2.7/bin/pythonw "\$@"
+PYTHONHOME="${VIRTUAL_ENV}" /usr/bin/arch -arch i386 /Library/Frameworks/Python.framework/Versions/2.7/bin/pythonw "\$@"
 EOF
 /bin/chmod +x ./pythonw32
 
@@ -161,17 +160,17 @@ EOF
 
 # Need to download PIL, patch its setup.py to find libjpeg and libtiff
 # (the universal ones that Brew installed), then run setup.py
-cd ${1}/cpdev
+cd "${1}"/cpdev
 mkdir PIL_build
-cd ${1}/cpdev/PIL_build
+cd "${1}"/cpdev/PIL_build
 /usr/bin/curl http://dist.plone.org/thirdparty/PIL-1.1.7.tar.gz | tar -xzf -
 cd PIL-1.1.7
 /usr/bin/sed -i "" "s@^TIFF_ROOT = None@TIFF_ROOT=libinclude('${HBPREFIX}')@;s@^JPEG_ROOT = None@JPEG_ROOT=libinclude('${HBPREFIX}')@" setup.py
 ../../bin/python setup.py build_ext build install
 # this version doesn't include the PIL.pth, which we should not rely on, anyway.
-/bin/echo "PIL" > ${1}/cpdev/lib/python2.7/site-packages/PIL.pth
+../../bin/python -c "import PIL, os.path; print os.path.dirname(PIL.__file__)" > "${1}"/cpdev/lib/python2.7/site-packages/PIL.pth
 # We won't bother cleaning up, for now, as having the PIL build directory around later may be useful.
-cd ${1}/cpdev/bin
+cd "${1}"/cpdev/bin
 
 # numpy/scipy/Cython
 ./pip install numpy
@@ -190,7 +189,7 @@ PKG_CONFIG_PATH=/usr/lib/pkgconfig:/usr/X11R6/lib/pkgconfig:${HBPREFIX}/lib/pkgc
 ./pip install 'svn+http://pylibtiff.googlecode.com/svn/trunk'
 
 # make sure we find mysql_config in the brew install
-PATH=${HBPREFIX}/bin:$PATH ./pip install MySQL-python
+./pip install MySQL-python
 
 # Note that we may have to patch py2app at some point:
 # http://cellprofiler.org/wiki/index.php/Creating_a_standalone_.app_on_the_Mac#Building_with_setup.py_py2app
