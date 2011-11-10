@@ -40,6 +40,13 @@ class CellprofilerDev < Formula
   end
 
   def install
+    # Make sure there are no spaces in the Homebrew path, or pip will fail.
+    if HOMEBREW_PREFIX.to_s.include? ' '
+      onoe "The homebrew directory \"#{HOMEBREW_PREFIX}\" contains spaces."
+      onoe "Unfortunately, some python scripts (pip) cannot work in this case."
+      exit 1
+    end
+
     # test that we're using a python installed in the expected place,
     # and that it's universal
     ohai "Checking that Python is in the right place and built for i386 and x86_64."
@@ -168,9 +175,9 @@ cd PIL-1.1.7
 /usr/bin/sed -i "" "s@^TIFF_ROOT = None@TIFF_ROOT=libinclude('${HBPREFIX}')@;s@^JPEG_ROOT = None@JPEG_ROOT=libinclude('${HBPREFIX}')@" setup.py
 ../../bin/python setup.py build_ext build install
 # this version doesn't include the PIL.pth, which we should not rely on, anyway.
-../../bin/python -c "import PIL, os.path; print os.path.dirname(PIL.__file__)" > "${1}"/cpdev/lib/python2.7/site-packages/PIL.pth
+cd "${1}"/cpdev/bin  # get out of the source directory so the next line imports from the correct place
+./python -c "import PIL, os.path; print os.path.dirname(PIL.__file__)" > "${1}"/cpdev/lib/python2.7/site-packages/PIL.pth
 # We won't bother cleaning up, for now, as having the PIL build directory around later may be useful.
-cd "${1}"/cpdev/bin
 
 # numpy/scipy/Cython
 ./pip install numpy
