@@ -95,6 +95,7 @@ class CellprofilerDev < Formula
     # Begin installation
     ENV.universal_binary
     system "/bin/sh", "./setup.sh", "#{prefix}"
+    inreplace "#{prefix}/cpdev/bin/activate", "\nexport PATH\n", "\nexport PATH\nexport DYLD_LIBRARY_PATH='#{HOMEBREW_PREFIX}'/lib:${DYLD_LIBRARY_PATH}"
     (bin+"activate-cpdev").write <<-EOS.undent
     #!/bin/sh
     . "#{prefix}"/cpdev/bin/activate
