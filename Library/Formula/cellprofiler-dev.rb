@@ -95,7 +95,9 @@ class CellprofilerDev < Formula
     # Begin installation
     ENV.universal_binary
     system "/bin/sh", "./setup.sh", "#{prefix}"
-    inreplace "#{prefix}/cpdev/bin/activate", "\nexport PATH\n", "\nexport PATH\nexport DYLD_LIBRARY_PATH='#{HOMEBREW_PREFIX}'/lib:${DYLD_LIBRARY_PATH}"
+    # Use DYLD_FALLBACK_LIBRARY_PATH to insert things as late as possible in the search order.
+    # Otherwise, gitk fails because they find a newer version of libjpeg than they expect.
+    inreplace "#{prefix}/cpdev/bin/activate", "\nexport PATH\n", "\nexport PATH\nexport DYLD_FALLBACK_LIBRARY_PATH='#{HOMEBREW_PREFIX}'/lib:${DYLD_FALLBACK_LIBRARY_PATH}"
     (bin+"activate-cpdev").write <<-EOS.undent
     #!/bin/sh
     . "#{prefix}"/cpdev/bin/activate
