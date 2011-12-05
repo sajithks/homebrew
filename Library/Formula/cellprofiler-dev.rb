@@ -193,7 +193,7 @@ HDF5_DIR=`${HOMEBREW_BREW_FILE} --prefix libhdf5-universal` ./pip install h5py
 
 # We need to use the 32 version of python we created above for matplotlib, as it uses wx.
 # The last bit is a tag, not an actual .zip.  
-PKG_CONFIG_PATH=/usr/lib/pkgconfig:/usr/X11R6/lib/pkgconfig:${HBPREFIX}/lib/pkgconfig ./python32 ./pip install git+https://github.com/matplotlib/matplotlib.git@v1.0.1
+PKG_CONFIG_PATH=/usr/lib/pkgconfig:/usr/X11R6/lib/pkgconfig:${HBPREFIX}/lib/pkgconfig ./python32 ./pip install git+https://github.com/thouis/matplotlib.git@cellprofiler-no-tk
 
 # backup for writing TIFFs in CP.  Note that it includes its own copy of libtiff.
 ./pip install 'svn+http://pylibtiff.googlecode.com/svn/trunk'
