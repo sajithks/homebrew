@@ -191,9 +191,13 @@ cd "${1}"/cpdev/bin  # get out of the source directory so the next line imports 
 # h5py
 HDF5_DIR=`${HOMEBREW_BREW_FILE} --prefix libhdf5-universal` ./pip install h5py
 
+# Cloning matplotlib from git takes a long time, so download just the source we need.
+# This is a special version with tkagg turned off as a display option.
+# The last bit is a tag, but this downloads as a .tar.gz.
+/usr/bin/curl https://github.com/thouis/matplotlib/tarball/v1.0.1-notkagg -L -o /tmp/matplotlib.tgz
 # We need to use the 32 version of python we created above for matplotlib, as it uses wx.
-# The last bit is a tag, not an actual .zip.  
-PKG_CONFIG_PATH=/usr/lib/pkgconfig:/usr/X11R6/lib/pkgconfig:${HBPREFIX}/lib/pkgconfig ./python32 ./pip install git+https://github.com/thouis/matplotlib.git@cellprofiler-no-tk
+PKG_CONFIG_PATH=/usr/lib/pkgconfig:/usr/X11R6/lib/pkgconfig:${HBPREFIX}/lib/pkgconfig ./python32 ./pip install /tmp/matplotlib.tgz
+/bin/rm /tmp/matplotlib.tgz
 
 # backup for writing TIFFs in CP.  Note that it includes its own copy of libtiff.
 ./pip install 'svn+http://pylibtiff.googlecode.com/svn/trunk'
