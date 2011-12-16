@@ -205,9 +205,13 @@ PKG_CONFIG_PATH=/usr/lib/pkgconfig:/usr/X11R6/lib/pkgconfig:${HBPREFIX}/lib/pkgc
 # make sure we find mysql_config in the brew install
 ./pip install MySQL-python
 
-# Note that we may have to patch py2app at some point:
-# http://cellprofiler.org/wiki/index.php/Creating_a_standalone_.app_on_the_Mac#Building_with_setup.py_py2app
-./pip install py2app==0.6.3
+# for py2app install
+./pip install Mercurial
+# install py2app & dependencies
+./pip install hg+https://bitbucket.org/ronaldoussoren/altgraph@43294d014786
+./pip install hg+https://bitbucket.org/ronaldoussoren/macholib@d65f105c8cd2
+./pip install hg+https://bitbucket.org/ronaldoussoren/modulegraph@f9355a7edee0
+./pip install hg+https://bitbucket.org/ronaldoussoren/py2app@0e3d19bbc464
 
 # TODO: py2app fixups?  Still needed?
 exit 0
