@@ -45,6 +45,7 @@ class CellprofilerDev < Formula
   def install
     # Begin installation
     ENV.universal_binary
+    system "touch", "#{prefix}/.good"
     system "/bin/sh", "./setup.sh", "#{prefix}"
     test
   end
@@ -57,8 +58,8 @@ class CellprofilerDev < Formula
       system "/usr/bin/arch", arch, python, "-c", "import scipy; print scipy.__version__"
       system "/usr/bin/arch", arch, python, "-c", "import MySQLdb; print MySQLdb.version_info"
       system "/usr/bin/arch", arch, python, "-c", "import h5py; print h5py.version.version_tuple"
+      system "/usr/bin/arch", arch, python, "-c", "import matplotlib; print matplotlib.__version__"
     end
-    system "#{prefix}/cpdev/bin/python32", "-c", "import matplotlib; print matplotlib.__version__"
   end
 end
 
@@ -95,11 +96,8 @@ HDF5_DIR=`${HOMEBREW_BREW_FILE} --prefix libhdf5-universal` ./pip install h5py
 PKG_CONFIG_PATH=/usr/lib/pkgconfig:/usr/X11R6/lib/pkgconfig:${HBPREFIX}/lib/pkgconfig ./python32 ./pip install /tmp/matplotlib.tgz
 /bin/rm /tmp/matplotlib.tgz
 
-# backup for writing TIFFs in CP.  Note that it includes its own copy of libtiff.
-./pip install 'svn+http://pylibtiff.googlecode.com/svn/trunk'
-
 # make sure we find mysql_config in the brew install
-./pip install MySQL-python
+./pip install MySQL-python==1.2.3
 
 # for py2app install
 ./pip install Mercurial
@@ -108,6 +106,9 @@ PKG_CONFIG_PATH=/usr/lib/pkgconfig:/usr/X11R6/lib/pkgconfig:${HBPREFIX}/lib/pkgc
 ./pip install hg+https://bitbucket.org/ronaldoussoren/macholib@d65f105c8cd2
 ./pip install hg+https://bitbucket.org/ronaldoussoren/modulegraph@f9355a7edee0
 ./pip install hg+https://bitbucket.org/ronaldoussoren/py2app@0e3d19bbc464
+
+# backup for writing TIFFs in CP.  Note that it includes its own copy of libtiff.
+./pip install 'svn+http://pylibtiff.googlecode.com/svn/trunk'
 
 # TODO: py2app fixups?  Still needed?
 exit 0
