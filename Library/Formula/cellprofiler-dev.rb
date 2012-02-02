@@ -83,10 +83,10 @@ cd ${VIRTUAL_ENV}/bin
 ./pip install numpy==1.6.1
 ./pip install scipy==0.10.0
 ./pip install Cython==0.15.1
-./pip install nose
+./pip install nose==1.1.2
 
 # h5py
-HDF5_DIR=`${HOMEBREW_BREW_FILE} --prefix libhdf5-universal` ./pip install h5py
+HDF5_DIR=`${HOMEBREW_BREW_FILE} --prefix libhdf5-universal` ./pip install h5py==2.0.1
 
 # Cloning matplotlib from git takes a long time, so download just the source we need.
 # This is a special version with tkagg turned off as a display option.

@@ -68,7 +68,7 @@ export HBPREFIX=`${HOMEBREW_BREW_FILE} --prefix`
 . ${HBPREFIX}/bin/activate-cpdev
 cd ${VIRTUAL_ENV}/bin
 
-./pip install 'git+https://github.com/thouis/Pillow.git'
+./pip install -U 'git+https://github.com/thouis/Pillow.git'
 
 exit 0
 
