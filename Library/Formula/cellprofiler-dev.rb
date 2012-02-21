@@ -44,6 +44,7 @@ class CellprofilerDev < Formula
 
   def install
     # Begin installation
+    ENV.gfortran
     ENV.universal_binary
     system "touch", "#{prefix}/.good"
     system "/bin/sh", "./setup.sh", "#{prefix}"
