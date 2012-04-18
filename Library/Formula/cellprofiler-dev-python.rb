@@ -22,16 +22,7 @@ class CellprofilerDevPython < Formula
   homepage 'http://cellprofiler.org/wiki/'
   md5 ''
 
-  depends_on 'gfortran'
-  # libjpeg is built universal 32/64 by brew
-  depends_on 'libjpeg'
   depends_on 'pkg-config' # missing on Snow Leopard?
-
-  # These are all modified to make sure they are universal.  In the
-  # future, brew might allow us to have dependencies with options.
-  depends_on 'libtiff-universal'
-  depends_on 'mysql-connector-c-universal'
-  depends_on 'libhdf5-universal'
 
   def older_version v1, v2
     v1 = v1.split('.').map{|s|s.to_i}.extend(Comparable)
@@ -48,7 +39,7 @@ class CellprofilerDevPython < Formula
     end
 
     # test that we're using a python installed in the expected place,
-    # and that it's universal
+    # and that it's universal if we're on 10.6 or higher
     ohai "Checking that Python is in the right place and built for i386 and x86_64."
     python_executable='/Library/Frameworks/Python.framework/Versions/2.7/bin/python'
     if Dir[python_executable].empty?
@@ -57,14 +48,16 @@ class CellprofilerDevPython < Formula
       exit 1
     end
     
-    python_file_info=`/usr/bin/file #{python_executable}`
-    if not (python_file_info.include? 'Mach-O executable i386' and
-            python_file_info.include? 'Mach-O 64-bit executable x86_64')
-      onoe "#{python_executable} does is not Universal i386 & x86_64."
-      onoe "Please install python.org's build of python 2.7."
-      exit 1
+    if MacOS.snow_leopard?  # 10.6 or higher
+      python_file_info=`/usr/bin/file #{python_executable}`
+      if not (python_file_info.include? 'Mach-O executable i386' and
+              python_file_info.include? 'Mach-O 64-bit executable x86_64')
+        onoe "#{python_executable} does is not Universal i386 & x86_64."
+        onoe "Please install python.org's build of python 2.7."
+        exit 1
+      end
     end
-
+  
     # test for virtualenv, and its version
     ohai "Checking that virtualenv is installed and a recent version."
     `/usr/bin/which virtualenv`

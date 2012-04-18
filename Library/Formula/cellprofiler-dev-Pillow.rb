@@ -46,8 +46,12 @@ class CellprofilerDevPillow < Formula
     testfile.close()
     # run tests
     python = "#{prefix}/../../cellprofiler-dev-python/1/cpdev/bin/python"
-    for arch in ["-x86_64", "-i386"]
-      system "/usr/bin/arch", arch, python, "-c", "from PIL import Image; assert len(Image.open('SmallTest.tif').tostring()) == 10000"
+    if MacOS.snow_leopard?  # 10.6 or higher
+      for arch in ["-x86_64", "-i386"]
+        system "/usr/bin/arch", arch, python, "-c", "from PIL import Image; assert len(Image.open('SmallTest.tif').tostring()) == 10000"
+      end
+    else
+      system python, "-c", "from PIL import Image; assert len(Image.open('SmallTest.tif').tostring()) == 10000"
     end
   end
 end

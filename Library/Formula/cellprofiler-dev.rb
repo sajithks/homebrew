@@ -30,7 +30,7 @@ class CellprofilerDev < Formula
   # These are all modified to make sure they are universal.  In the
   # future, brew might allow us to have dependencies with options.
   depends_on 'libtiff-universal'
-  depends_on 'mysql-connector-c-universal'
+  depends_on 'mysql-connector-c'
   depends_on 'libhdf5-universal'
 
   depends_on 'cellprofiler-dev-python'
@@ -44,8 +44,10 @@ class CellprofilerDev < Formula
 
   def install
     # Begin installation
-    ENV.gfortran
-    ENV.universal_binary
+    ENV.fortran
+    if MacOS.snow_leopard?
+      ENV.universal_binary
+    end
     system "touch", "#{prefix}/.good"
     system "/bin/sh", "./setup.sh", "#{prefix}"
     test
@@ -55,7 +57,12 @@ class CellprofilerDev < Formula
     ohai "Running tests"
     # run tests
     python = "#{prefix}/../../cellprofiler-dev-python/1/cpdev/bin/python"
-    for arch in ["-x86_64", "-i386"]
+    if MacOS.snow_leopard?
+      arches = ["-x86_64", "-i386"]
+    else
+      arches = ["-i386"]
+    end
+    for arch in arches
       system "/usr/bin/arch", arch, python, "-c", "import scipy; print scipy.__version__"
       system "/usr/bin/arch", arch, python, "-c", "import MySQLdb; print MySQLdb.version_info"
       system "/usr/bin/arch", arch, python, "-c", "import h5py; print h5py.version.version_tuple"
