@@ -29,6 +29,7 @@ class CellprofilerDevPython < Formula
 
   # These are all modified to make sure they are universal.  In the
   # future, brew might allow us to have dependencies with options.
+  depends_on 'python10.5sdk'
   depends_on 'libtiff-universal'
   depends_on 'mysql-connector-c-universal'
   depends_on 'libhdf5-universal'
@@ -50,37 +51,12 @@ class CellprofilerDevPython < Formula
     # test that we're using a python installed in the expected place,
     # and that it's universal
     ohai "Checking that Python is in the right place and built for i386 and x86_64."
-    python_executable='/Library/Frameworks/Python.framework/Versions/2.7/bin/python'
-    if Dir[python_executable].empty?
-      onoe "Did not find #{python_executable}."
-      onoe "Please install python.org's build of python 2.7."
-      exit 1
-    end
+    python_executable="#{HOMEBREW_PREFIX}/Cellar/python10.5sdk/2.7.2/bin/python"
     
     python_file_info=`/usr/bin/file #{python_executable}`
     if not (python_file_info.include? 'Mach-O executable i386' and
             python_file_info.include? 'Mach-O 64-bit executable x86_64')
-      onoe "#{python_executable} does is not Universal i386 & x86_64."
-      onoe "Please install python.org's build of python 2.7."
-      exit 1
-    end
-
-    # test for virtualenv, and its version
-    ohai "Checking that virtualenv is installed and a recent version."
-    `/usr/bin/which virtualenv`
-    if not $?.success?
-      onoe 'Could not find virtualenv on the PATH.  Is it installed?'
-      exit 1
-    end
-
-    virtualenv_version=`virtualenv --version`
-    if not $?.success?
-      onoe 'Failure running virtualenv --version'
-      exit 1
-    end
-
-    if older_version virtualenv_version, "1.5.1"
-      onoe 'This script has only been tested with virtualenv 1.5.1.  Please upgrade.'
+      onoe "#{python_executable} is not Universal i386 & x86_64."
       exit 1
     end
 
@@ -113,13 +89,9 @@ __END__
 set -e
 set -o pipefail
 
-# Clear a bunch of environment that Brew set up, but that break the scipy build
-unset CFLAGS CXXFLAGS LDFLAGS
-
-# useful below
 export HBPREFIX=`${HOMEBREW_BREW_FILE} --prefix`
-
-virtualenv -p /Library/Frameworks/Python.framework/Versions/2.7/bin/python --no-site-packages "${1}"/cpdev
+export PYTHONBIN=${HBPREFIX}/Cellar/python10.5sdk/2.7.2/Library/Frameworks/Python.framework/Versions/2.7/bin
+${PYTHONBIN}/virtualenv "${1}"/cpdev
 
 . "${1}"/cpdev/bin/activate
 cd "${1}"/cpdev/bin
@@ -127,18 +99,15 @@ cd "${1}"/cpdev/bin
 # Create a 32-bit python (we need it for installing matplotlib in 32-bit land)
 /usr/bin/lipo ./python -thin i386 -output ./python32
 
-# get a 32-bit framework build of python into the environment
-/bin/cat > ./pythonw32 <<EOF
+# create a 32-bit framework python for running wx
+cat > ./pythonw32 <<EOS
 #!/bin/bash
-PYTHONHOME="${VIRTUAL_ENV}" /usr/bin/arch -arch i386 /Library/Frameworks/Python.framework/Versions/2.7/bin/pythonw "\$@"
-EOF
+PYTHONHOME=$VIRTUAL_ENV $(dirname $(readlink $VIRTUAL_ENV/.Python))/bin/pythonw-32 $*
+EOS
 /bin/chmod +x ./pythonw32
 
-# Upgrade pip so it can fetch git+https URLs
-./pip install -U pip 
-
 # put in the wxredirect.pth
-./python <<EOF
+./python <<EOS
 import os
 import os.path
 import glob
@@ -148,6 +117,6 @@ assert len(wxdirs) > 0, "No directories matching %s found!" % ('/usr/local/lib/w
 dest = os.path.join(os.getenv('VIRTUAL_ENV'), 'lib', 'python2.7', 'site-packages', 'wxredirect.pth')
 open(dest, 'w').write("import site; site.addsitedir('%s')\n" % (wxdirs[-1]))
 sys.exit(0)
-EOF
+EOS
 
 exit 0

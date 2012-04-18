@@ -7,6 +7,7 @@ class LibtiffUniversal < Formula
 
   def install
     ENV.universal_binary
+    ENV.osx_10_5
     # could not get opengl to work, and easiest way to turn it off seems to be to disable X
     system "./configure", "--prefix=#{prefix}", "--mandir=#{man}", "--disable-dependency-tracking", "--disable-cxx", "--with-x=no"
     # I don't want to fight with autconf, especially since libtiff

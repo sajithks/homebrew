@@ -44,8 +44,8 @@ class CellprofilerDev < Formula
 
   def install
     # Begin installation
-    ENV.gfortran
     ENV.universal_binary
+    ENV.fortran
     system "touch", "#{prefix}/.good"
     system "/bin/sh", "./setup.sh", "#{prefix}"
     test
@@ -77,12 +77,15 @@ unset CFLAGS CXXFLAGS LDFLAGS
 # useful below
 export HBPREFIX=`${HOMEBREW_BREW_FILE} --prefix`
 
+# for gfortran
+PATH=${HBPREFIX}/bin:$PATH
+
 . ${HBPREFIX}/bin/activate-cpdev
 cd ${VIRTUAL_ENV}/bin
 
 # numpy/scipy/Cython
 ./pip install numpy==1.6.1
-./pip install scipy==0.10.0
+./pip install scipy==0.10.1
 ./pip install Cython==0.15.1
 ./pip install nose==1.1.2
 
@@ -94,14 +97,14 @@ HDF5_DIR=`${HOMEBREW_BREW_FILE} --prefix libhdf5-universal` ./pip install h5py==
 # The last bit is a tag, but this downloads as a .tar.gz.
 /usr/bin/curl https://github.com/thouis/matplotlib/tarball/v1.0.1-notkagg -L -o /tmp/matplotlib.tgz
 # We need to use the 32 version of python we created above for matplotlib, as it uses wx.
-PKG_CONFIG_PATH=/usr/lib/pkgconfig:/usr/X11R6/lib/pkgconfig:${HBPREFIX}/lib/pkgconfig ./python32 ./pip install /tmp/matplotlib.tgz
+PKG_CONFIG_PATH=/usr/lib/pkgconfig:${HBPREFIX}/lib/pkgconfig ./python32 ./pip install /tmp/matplotlib.tgz
 /bin/rm /tmp/matplotlib.tgz
 
 # make sure we find mysql_config in the brew install
 ./pip install MySQL-python==1.2.3
 
 # for py2app install
-./pip install Mercurial
+./pip install Mercurial==2.1
 # install py2app & dependencies
 ./pip install hg+https://bitbucket.org/ronaldoussoren/altgraph@43294d014786
 ./pip install hg+https://bitbucket.org/ronaldoussoren/macholib@d65f105c8cd2

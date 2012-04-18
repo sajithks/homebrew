@@ -7,6 +7,7 @@ class Gdbm < Formula
   md5 '88770493c2559dc80b561293e39d3570'
 
   def install
+    ENV.universal_binary
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}",

@@ -11,6 +11,7 @@ class MysqlConnectorCUniversal < Formula
 
   def install
     ENV.universal_binary
+    ENV.osx_10_5
     system "cmake . #{std_cmake_parameters}"
     system 'make'
     ENV.j1

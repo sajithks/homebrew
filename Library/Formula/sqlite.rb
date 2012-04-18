@@ -42,7 +42,7 @@ class Sqlite < Formula
     ENV.append 'CPPFLAGS', "-DSQLITE_ENABLE_COLUMN_METADATA"
     ENV.append 'CPPFLAGS', "-DSQLITE_ENABLE_STAT3"
 
-    ENV.universal_binary if ARGV.build_universal?
+    ENV.universal_binary
 
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking",
                           (ARGV.include? "--with-functions") ? "--enable-dynamic-extensions" : ""
