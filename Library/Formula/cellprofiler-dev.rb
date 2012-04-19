@@ -99,7 +99,7 @@ HDF5_DIR=`${HOMEBREW_BREW_FILE} --prefix libhdf5-universal` ./pip install h5py==
 # Cloning matplotlib from git takes a long time, so download just the source we need.
 # This is a special version with tkagg turned off as a display option.
 # The last bit is a tag, but this downloads as a .tar.gz.
-/usr/bin/curl https://github.com/thouis/matplotlib/tarball/v1.0.1-notkagg -L -o /tmp/matplotlib.tgz
+/usr/bin/curl -k https://github.com/thouis/matplotlib/tarball/v1.0.1-notkagg -L -o /tmp/matplotlib.tgz
 # We need to use the 32 version of python we created above for matplotlib, as it uses wx.
 PKG_CONFIG_PATH=/usr/lib/pkgconfig:/usr/X11R6/lib/pkgconfig:${HBPREFIX}/lib/pkgconfig ./python32 ./pip install /tmp/matplotlib.tgz
 /bin/rm /tmp/matplotlib.tgz
