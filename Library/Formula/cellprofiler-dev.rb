@@ -79,7 +79,7 @@ set -e
 set -o pipefail
 
 # Clear a bunch of environment that Brew set up, but that break the scipy build
-unset CFLAGS CXXFLAGS LDFLAGS
+unset CFLAGS CXXFLAGS LDFLAGS F77 FC FCFLAGS FFLAGS
 
 # useful below
 export HBPREFIX=`${HOMEBREW_BREW_FILE} --prefix`
