@@ -1,3 +1,13 @@
+CellProfiler-dev Homebrew
+=========================
+On 10.6 or above: install Python 2.7 (i386+x86_64) from python.org.
+On 10.5: install Python 2.7 (i386+ppc) from python.org.
+
+Install wxPython2.8-osx-unicode-2.8.12.1-universal-py2.7.dmg.
+Install virtualenv (using easy_install is easiest, I believe).
+
+Then run brew install cellprofiler-dev.
+
 Homebrew
 ========
 Features, usage and installation instructions are [summarized on the homepage][home].
