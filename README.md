@@ -1,12 +1,20 @@
 CellProfiler-dev Homebrew
 =========================
 On 10.6 or above: install Python 2.7 (i386+x86_64) from python.org.
+
 On 10.5: install Python 2.7 (i386+ppc) from python.org.
 
 Install wxPython2.8-osx-unicode-2.8.12.1-universal-py2.7.dmg.
+
 Install virtualenv (using easy_install is easiest, I believe).
 
-Then run brew install cellprofiler-dev.
+Clone this repo: git clone git://github.com/thouis/homebrew.git CPhomebrew.git
+
+Then run CPhomebrew.git/bin/brew install cellprofiler-dev
+
+Then, activate the CP virtualenv: source CPhomebrew.git/bin/activate-cpdev
+
+And you should be able to run CellProfiler with "pythonw32 CellProfiler.py".  (The virtualenv will have modified your PATH to point to the correct version of pythonw32).
 
 Homebrew
 ========
