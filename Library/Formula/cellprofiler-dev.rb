@@ -93,6 +93,10 @@ cd ${VIRTUAL_ENV}/bin
 ./pip install Cython==0.15.1
 ./pip install nose==1.1.2
 
+# Create a nosetests that calls pythonw32
+/bin/cp `which nosetests` ./nosetestsw32
+/usr/bin/sed -i "" -e "s/python$/pythonw32/" nosetestsw32
+
 # h5py
 HDF5_DIR=`${HOMEBREW_BREW_FILE} --prefix libhdf5-universal` ./pip install h5py==2.0.1
 
