@@ -32,6 +32,7 @@ class CellprofilerDev < Formula
   depends_on 'libtiff-universal'
   depends_on 'mysql-connector-c'
   depends_on 'libhdf5-universal'
+  depends_on 'zeromq-universal'
 
   depends_on 'cellprofiler-dev-python'
   depends_on 'cellprofiler-dev-Pillow'
@@ -92,6 +93,7 @@ cd ${VIRTUAL_ENV}/bin
 ./pip install scipy==0.10.0
 ./pip install Cython==0.15.1
 ./pip install nose==1.1.2
+./pip install pyzmq --install-option=--zmq=$(${HOMEBREW_BREW_FILE} --prefix zeromq-universal)
 
 # Create a nosetests that calls pythonw32
 /bin/cp `which nosetests` ./nosetestsw32
