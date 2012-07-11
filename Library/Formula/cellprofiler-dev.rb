@@ -102,13 +102,7 @@ cd ${VIRTUAL_ENV}/bin
 # h5py
 HDF5_DIR=`${HOMEBREW_BREW_FILE} --prefix libhdf5-universal` ./pip install h5py==2.0.1
 
-# Cloning matplotlib from git takes a long time, so download just the source we need.
-# This is a special version with tkagg turned off as a display option.
-# The last bit is a tag, but this downloads as a .tar.gz.
-/usr/bin/curl -k https://github.com/thouis/matplotlib/tarball/v1.0.1-notkagg -L -o /tmp/matplotlib.tgz
-# We need to use the 32 version of python we created above for matplotlib, as it uses wx.
-PKG_CONFIG_PATH=/usr/lib/pkgconfig:/usr/X11R6/lib/pkgconfig:${HBPREFIX}/lib/pkgconfig ./python32 ./pip install /tmp/matplotlib.tgz
-/bin/rm /tmp/matplotlib.tgz
+PKG_CONFIG_PATH=/usr/lib/pkgconfig:/usr/X11R6/lib/pkgconfig:${HBPREFIX}/lib/pkgconfig ./python32 ./pip install https://github.com/matplotlib/matplotlib/tarball/v1.1.0
 
 # make sure we find mysql_config in the brew install
 ./pip install MySQL-python==1.2.3
