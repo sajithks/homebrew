@@ -4,13 +4,13 @@ class Mongodb < Formula
   homepage 'http://www.mongodb.org/'
 
   if Hardware.is_64_bit? and not ARGV.build_32_bit?
-    url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.0.4.tgz'
-    md5 '0d8dddfe267f6ba0ce36baa82afa6947'
-    version '2.0.4-x86_64'
+    url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.0.6.tgz'
+    md5 '84e592882003bed6249d258203fd0473'
+    version '2.0.6-x86_64'
   else
-    url 'http://fastdl.mongodb.org/osx/mongodb-osx-i386-2.0.4.tgz'
-    md5 '37df92b98d6bd22d06c394966f8c3b8b'
-    version '2.0.4-i386'
+    url 'http://fastdl.mongodb.org/osx/mongodb-osx-i386-2.0.6.tgz'
+    md5 'a970a8e6c6de5d655816123b0c8f5718'
+    version '2.0.6-i386'
   end
 
   skip_clean :all
@@ -48,7 +48,7 @@ class Mongodb < Formula
         launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
     Or start it manually:
-        mongod run --config #{prefix}/mongod.conf
+        mongod run --config #{etc}/mongod.conf
 
     The launchctl plist above expects the config file to be at #{etc}/mongod.conf.
     EOS
