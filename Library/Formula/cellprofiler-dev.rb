@@ -102,7 +102,7 @@ cd ${VIRTUAL_ENV}/bin
 # h5py
 HDF5_DIR=`${HOMEBREW_BREW_FILE} --prefix libhdf5-universal` ./pip install h5py==2.0.1
 
-./pip install https://github.com/matplotlib/matplotlib/tarball/v1.1.0
+PKG_CONFIG_PATH=/usr/lib/pkgconfig:/usr/X11R6/lib/pkgconfig:${HBPREFIX}/lib/pkgconfig ./python32 ./pip install https://github.com/matplotlib/matplotlib/tarball/v1.1.0
 
 # make sure we find mysql_config in the brew install
 ./pip install MySQL-python==1.2.3
