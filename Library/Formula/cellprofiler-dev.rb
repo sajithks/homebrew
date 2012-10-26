@@ -2,9 +2,9 @@ require 'formula'
 require 'base64'
 
 class DATADownloadStrategy < AbstractDownloadStrategy
-  def initialize url, name, version, specs
+  def initialize name, package
     super
-    @temp_dest=HOMEBREW_CACHE+"#{name}-#{version}-setup.sh"
+    @temp_dest=HOMEBREW_CACHE+"#{name}-#{package.version}-setup.sh"
   end
 
   def fetch
@@ -26,6 +26,7 @@ class CellprofilerDev < Formula
   # libjpeg is built universal 32/64 by brew
   depends_on 'libjpeg'
   depends_on 'pkg-config' # missing on Snow Leopard?
+  depends_on 'swig'  # new requirement for scipy?
 
   # These are all modified to make sure they are universal.  In the
   # future, brew might allow us to have dependencies with options.
@@ -49,7 +50,7 @@ class CellprofilerDev < Formula
     if MacOS.snow_leopard?
       ENV.universal_binary
     end
-    system "touch", "#{prefix}/.good"
+    system "touch", "#{prefix}/install.is.good"
     system "/bin/sh", "./setup.sh", "#{prefix}"
     test
   end
@@ -89,11 +90,11 @@ export HBPREFIX=`${HOMEBREW_BREW_FILE} --prefix`
 cd ${VIRTUAL_ENV}/bin
 
 # numpy/scipy/Cython
-./pip install numpy==1.6.1
-./pip install scipy==0.10.0
+./pip install git+https://github.com/numpy/numpy.git@v1.7.0b2
+./pip install scipy==0.11.0
 ./pip install Cython==0.15.1
 ./pip install nose==1.1.2
-./pip install pyzmq --install-option=--zmq=$(${HOMEBREW_BREW_FILE} --prefix zeromq-universal)
+./pip install --install-option=--zmq=$(${HOMEBREW_BREW_FILE} --prefix zeromq-universal) pyzmq
 
 # Create a nosetests that calls pythonw32
 /bin/cp `which nosetests` ./nosetestsw32
@@ -102,7 +103,8 @@ cd ${VIRTUAL_ENV}/bin
 # h5py
 HDF5_DIR=`${HOMEBREW_BREW_FILE} --prefix libhdf5-universal` ./pip install h5py==2.0.1
 
-PKG_CONFIG_PATH=/usr/lib/pkgconfig:/usr/X11R6/lib/pkgconfig:${HBPREFIX}/lib/pkgconfig ./python32 ./pip install https://github.com/matplotlib/matplotlib/tarball/v1.1.0
+./pip install git+git://github.com/matplotlib/matplotlib.git
+
 
 # make sure we find mysql_config in the brew install
 ./pip install MySQL-python==1.2.3
@@ -116,7 +118,7 @@ PKG_CONFIG_PATH=/usr/lib/pkgconfig:/usr/X11R6/lib/pkgconfig:${HBPREFIX}/lib/pkgc
 ./pip install hg+https://bitbucket.org/ronaldoussoren/py2app@0e3d19bbc464
 
 # backup for writing TIFFs in CP.  Note that it includes its own copy of libtiff.
-./pip install 'svn+http://pylibtiff.googlecode.com/svn/trunk'
+# ./pip install 'svn+http://pylibtiff.googlecode.com/svn/trunk'
 
 # TODO: py2app fixups?  Still needed?
 exit 0

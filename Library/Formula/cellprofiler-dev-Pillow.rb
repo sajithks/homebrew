@@ -2,9 +2,9 @@ require 'formula'
 require 'base64'
 
 class DATADownloadStrategy < AbstractDownloadStrategy
-  def initialize url, name, version, specs
+  def initialize name, package
     super
-    @temp_dest=HOMEBREW_CACHE+"#{name}-#{version}-setup.sh"
+    @temp_dest=HOMEBREW_CACHE+"#{name}-#{package.version}-setup.sh"
   end
 
   def fetch
@@ -34,8 +34,8 @@ class CellprofilerDevPillow < Formula
   def install
     # Begin installation
     ENV.universal_binary
-    system "touch", "#{prefix}/.good"
     system "/bin/sh", "./setup.sh", "#{prefix}"
+    system "touch", "#{prefix}/install.is.good"
     test
   end
 

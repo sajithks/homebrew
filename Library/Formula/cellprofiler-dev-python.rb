@@ -2,9 +2,9 @@ require 'formula'
 require 'base64'
 
 class DATADownloadStrategy < AbstractDownloadStrategy
-  def initialize url, name, version, specs
+  def initialize name, package
     super
-    @temp_dest=HOMEBREW_CACHE+"#{name}-#{version}-setup.sh"
+    @temp_dest=HOMEBREW_CACHE+"#{name}-#{package.version}-setup.sh"
   end
 
   def fetch
@@ -21,6 +21,7 @@ class CellprofilerDevPython < Formula
   version '1'
   homepage 'http://cellprofiler.org/wiki/'
   md5 ''
+  env :userpaths  # to find virtualenv
 
   depends_on 'pkg-config' # missing on Snow Leopard?
 
@@ -41,7 +42,7 @@ class CellprofilerDevPython < Formula
     # test that we're using a python installed in the expected place,
     # and that it's universal if we're on 10.6 or higher
     ohai "Checking that Python is in the right place and built for i386 and x86_64."
-    python_executable='/Library/Frameworks/Python.framework/Versions/2.7/bin/python'
+    python_executable='/System/Library/Frameworks/Python.framework/Versions/2.7/bin/python'
     if Dir[python_executable].empty?
       onoe "Did not find #{python_executable}."
       onoe "Please install python.org's build of python 2.7."
@@ -112,7 +113,7 @@ unset CFLAGS CXXFLAGS LDFLAGS
 # useful below
 export HBPREFIX=`${HOMEBREW_BREW_FILE} --prefix`
 
-virtualenv -p /Library/Frameworks/Python.framework/Versions/2.7/bin/python --no-site-packages "${1}"/cpdev
+virtualenv -p /System/Library/Frameworks/Python.framework/Versions/2.7/bin/python --no-site-packages "${1}"/cpdev
 
 . "${1}"/cpdev/bin/activate
 cd "${1}"/cpdev/bin
