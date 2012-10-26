@@ -3,7 +3,7 @@ require 'formula'
 class Nss < Formula
   url 'http://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_3_12_10_RTM/src/nss-3.12.10.tar.gz'
   homepage 'http://www.mozilla.org/projects/security/pki/nss/'
-  md5 '027954e894f02732f4e66cd854261145'
+  sha1 '229f65c8d4e2c1b34e145253bceddada5a82a142'
 
   depends_on 'nspr'
 
@@ -16,9 +16,14 @@ class Nss < Formula
       'NS_USE_GCC=1',
       'NO_MDUPDATE=1',
       'NSS_USE_SYSTEM_SQLITE=1',
-      "NSPR_INCLUDE_DIR=#{HOMEBREW_PREFIX}/include/nspr"
+      "NSPR_INCLUDE_DIR=#{HOMEBREW_PREFIX}/include/nspr",
+      "NSPR_LIB_DIR=#{HOMEBREW_PREFIX}/lib"
     ]
     args << 'USE_64=1' if MacOS.prefer_64_bit?
+
+    # Remove the broken (for anyone but Firefox) install_name
+    inreplace "mozilla/security/coreconf/Darwin.mk", "-install_name @executable_path", "-install_name #{lib}"
+    inreplace "mozilla/security/nss/lib/freebl/config.mk", "@executable_path", lib
 
     system "make", "build_coreconf", "build_dbm", "all", "-C", "mozilla/security/nss", *args
 

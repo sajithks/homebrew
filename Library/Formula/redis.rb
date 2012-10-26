@@ -2,15 +2,10 @@ require 'formula'
 
 class Redis < Formula
   homepage 'http://redis.io/'
-  url 'http://redis.googlecode.com/files/redis-2.4.14.tar.gz'
-  sha1 '3f0a2ac2eef9319edb0d789d3553f77b2a3dc31d'
+  url 'http://redis.googlecode.com/files/redis-2.6.0.tar.gz'
+  sha1 'f440fe92181ba91cbc632f27c0d7f381ce65a045'
 
   head 'https://github.com/antirez/redis.git', :branch => 'unstable'
-
-  devel do
-    url  'http://redis.googlecode.com/files/redis-2.6.0-rc3.tar.gz'
-    sha1 '322b60dfa4a498b66fa1125ac97d80d40024099b'
-  end
 
   fails_with :llvm do
     build 2334
@@ -36,8 +31,6 @@ class Redis < Formula
     end
 
     etc.install 'redis.conf' unless (etc/'redis.conf').exist?
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
 
   def caveats

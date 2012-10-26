@@ -2,21 +2,20 @@ require 'formula'
 
 class TheSilverSearcher < Formula
   homepage 'https://github.com/ggreer/the_silver_searcher'
-  url 'https://github.com/ggreer/the_silver_searcher/tarball/0.5'
-  md5 'e39ccf313e40156176fb9fcd5373864c'
+  url 'https://github.com/ggreer/the_silver_searcher/tarball/0.12'
+  sha1 '8b19f76fd81d7c2db22567127cf2cf8d6302d43a'
+
   head 'https://github.com/ggreer/the_silver_searcher.git'
 
-  if MacOS.xcode_version >= '4.3'
-    depends_on 'automake' => :build
-    depends_on 'autoconf' => :build
-  end
+  depends_on :automake
+  depends_on :autoconf
+
   depends_on 'pkg-config' => :build
   depends_on 'pcre'
 
-
   def install
     # Stable tarball does not include pre-generated configure script
-    system "aclocal -I /usr/local/share/aclocal"
+    system "aclocal -I #{HOMEBREW_PREFIX}/share/aclocal"
     system "autoconf"
     system "autoheader"
     system "automake --add-missing"
