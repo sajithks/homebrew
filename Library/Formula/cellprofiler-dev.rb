@@ -34,6 +34,7 @@ class CellprofilerDev < Formula
   depends_on 'mysql-connector-c'
   depends_on 'libhdf5-universal'
   depends_on 'zeromq-universal'
+  depends_on 'freetype-universal'
 
   depends_on 'cellprofiler-dev-python'
   depends_on 'cellprofiler-dev-Pillow'
