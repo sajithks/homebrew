@@ -88,10 +88,19 @@ unset CFLAGS CXXFLAGS LDFLAGS F77 FC FCFLAGS FFLAGS
 export HBPREFIX=`${HOMEBREW_BREW_FILE} --prefix`
 
 . ${HBPREFIX}/bin/activate-cpdev
-cd ${VIRTUAL_ENV}/bin
-
 # numpy/scipy/Cython
-./pip install git+https://github.com/numpy/numpy.git@v1.7.0b2
+
+# For some reason, pip installs of nympy don't put everything in place
+# that's needed, so we download and install it in the usual way.
+
+echo $PATH
+/usr/bin/curl -L -O https://github.com/numpy/numpy/archive/v1.7.0b2.zip
+/usr/bin/unzip v1.7.0b2.zip
+cd numpy-1.7.0b2
+${VIRTUAL_ENV}/bin/python setup.py build --fcompiler=gnu95
+${VIRTUAL_ENV}/bin/python setup.py install
+
+cd ${VIRTUAL_ENV}/bin
 ./pip install scipy==0.11.0
 ./pip install Cython==0.15.1
 ./pip install nose==1.1.2
