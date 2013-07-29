@@ -4,6 +4,8 @@ class LibtiffUniversal < Formula
   homepage 'http://www.remotesensing.org/libtiff/'
   url 'http://download.osgeo.org/libtiff/tiff-4.0.0beta7.tar.gz'
   sha256 '7b622db9e62a14464b0ae27e5eed4e2e893d7aab889c778e56ac28df069c3ded'
+  
+  depends_on 'libjpeg'
 
   def install
     ENV.universal_binary

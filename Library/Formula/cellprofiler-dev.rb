@@ -100,7 +100,7 @@ cd ${VIRTUAL_ENV}/bin
 /usr/bin/sed -i "" -e "s/python$/pythonw32/" nosetestsw32
 
 # h5py
-HDF5_DIR=`${HOMEBREW_BREW_FILE} --prefix libhdf5-universal` ./pip install h5py==2.0.1
+HDF5_DIR=`${HOMEBREW_BREW_FILE} --prefix libhdf5-universal` ./pip install h5py==2.1.3
 
 PKG_CONFIG_PATH=/usr/lib/pkgconfig:/usr/X11R6/lib/pkgconfig:${HBPREFIX}/lib/pkgconfig ./python32 ./pip install https://github.com/matplotlib/matplotlib/tarball/v1.1.0
 
