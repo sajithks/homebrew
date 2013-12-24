@@ -32,10 +32,12 @@ class CellprofilerDev < Formula
   depends_on 'libtiff-universal'
   depends_on 'mysql-connector-c'
   depends_on 'libhdf5-universal'
-  depends_on 'zeromq-universal'
+  #depends_on 'zeromq-universal'
+  #depends_on 'zeromq'
+  depends_on 'libpng'
+  depends_on 'freetype'
 
   depends_on 'cellprofiler-dev-python'
-  depends_on 'cellprofiler-dev-Pillow'
 
   def older_version v1, v2
     v1 = v1.split('.').map{|s|s.to_i}.extend(Comparable)
@@ -89,31 +91,37 @@ export HBPREFIX=`${HOMEBREW_BREW_FILE} --prefix`
 cd ${VIRTUAL_ENV}/bin
 
 # numpy/scipy/Cython
-./pip install numpy==1.6.1
-./pip install scipy==0.10.0
+./pip install numpy==1.8.0
+./pip install scipy==0.13.2
 ./pip install Cython==0.15.1
 ./pip install nose==1.1.2
-./pip install pyzmq --install-option=--zmq=$(${HOMEBREW_BREW_FILE} --prefix zeromq-universal)
+./pip install pyzmq==14.0.1 --install-option=--zmq=bundled
+./pip install pytz
 
 # Create a nosetests that calls pythonw32
 /bin/cp `which nosetests` ./nosetestsw32
 /usr/bin/sed -i "" -e "s/python$/pythonw32/" nosetestsw32
 
+${HOMEBREW_BREW_FILE} link libhdf5-universal
 # h5py
-HDF5_DIR=`${HOMEBREW_BREW_FILE} --prefix libhdf5-universal` ./pip install h5py==2.1.3
+# The h5py project has started hosting the files external to pypi, so
+# additional options are needed to tell pip that it's ok to install it.
+HDF5_DIR=`${HOMEBREW_BREW_FILE} --prefix libhdf5-universal` ./pip install h5py==2.1.3 --allow-all-external --allow-unverified h5py
 
-PKG_CONFIG_PATH=/usr/lib/pkgconfig:/usr/X11R6/lib/pkgconfig:${HBPREFIX}/lib/pkgconfig ./python32 ./pip install https://github.com/matplotlib/matplotlib/tarball/v1.1.0
+PKG_CONFIG_PATH=/usr/lib/pkgconfig:/usr/X11R6/lib/pkgconfig:${HBPREFIX}/lib/pkgconfig ./python32 ./pip install matplotlib==1.1.1
 
 # make sure we find mysql_config in the brew install
-./pip install MySQL-python==1.2.3
+# When building on 10.9, -mmacosx-version-min=10.6 works for both
+# architectures whereas CFLAGS="-stdlib=libstdc++" does not.
+ARCH_FLAGS="-arch i386 -arch x86_64 -mmacosx-version-min=10.6" ./pip install MySQL-python==1.2.5
+
+./pip install Pillow==2.3.0
 
 # for py2app install
-./pip install Mercurial
+./pip install Mercurial==2.8.2
 # install py2app & dependencies
-./pip install hg+https://bitbucket.org/ronaldoussoren/altgraph@43294d014786
-./pip install hg+https://bitbucket.org/ronaldoussoren/macholib@d65f105c8cd2
-./pip install hg+https://bitbucket.org/ronaldoussoren/modulegraph@f9355a7edee0
-./pip install hg+https://bitbucket.org/ronaldoussoren/py2app@0e3d19bbc464
+./pip install macholib==1.5.1
+./pip install py2app==0.7.3
 
 # backup for writing TIFFs in CP.  Note that it includes its own copy of libtiff.
 ./pip install 'svn+http://pylibtiff.googlecode.com/svn/trunk'

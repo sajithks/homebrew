@@ -16,11 +16,6 @@ def blacklisted? name
     However not all build scripts look for these hard enough, so you may need
     to call ENV.libxml2 in your formula's install function.
     EOS
-  when 'freetype', 'libpng' then <<-EOS.undent
-    Apple distributes #{name} with OS X, you can find it in /usr/X11/lib.
-    However not all build scripts look here, so you may need to call ENV.x11
-    in your formula's install function.
-    EOS
   when 'wxwidgets' then <<-EOS.undent
     An old version of wxWidgets can be found in /usr/X11/lib. However, Homebrew
     does provide a newer version, 2.8.10:

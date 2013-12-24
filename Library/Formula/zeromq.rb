@@ -22,8 +22,7 @@ class Zeromq < Formula
 
   def options
     [
-      ['--with-pgm', 'Build with PGM extension'],
-      ['--universal', 'Build as a Universal Intel binary.']
+      ['--with-pgm', 'Build with PGM extension']
     ]
   end
 
@@ -46,13 +45,7 @@ class Zeromq < Formula
   def install
     system "./autogen.sh" if ARGV.build_head?
 
-    if ARGV.build_universal?
-      build_fat
-    else
-      args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
-      args << "--with-pgm" if ARGV.include? '--with-pgm'
-      system "./configure", *args
-    end
+    build_fat
 
     system "make"
     system "make install"
