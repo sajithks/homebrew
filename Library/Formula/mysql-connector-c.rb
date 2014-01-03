@@ -14,6 +14,7 @@ class MysqlConnectorC < Formula
 
   def install
     ENV.universal_binary
+    ENV.append_to_cflags '-arch i386 -arch x86_64 -mmacosx-version-min=10.6'
     system "cmake", ".", *std_cmake_args
     system 'make'
     ENV.j1
