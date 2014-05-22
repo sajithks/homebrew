@@ -95,7 +95,7 @@ cd ${VIRTUAL_ENV}/bin
 ./pip install scipy==0.13.2
 ./pip install Cython==0.15.1
 ./pip install nose==1.1.2
-./pip install pyzmq==14.0.1 --install-option=--zmq=bundled
+./pip install pyzmq==2.2.0.1 --install-option=--zmq=bundled
 ./pip install pytz
 
 # Create a nosetests that calls pythonw32
