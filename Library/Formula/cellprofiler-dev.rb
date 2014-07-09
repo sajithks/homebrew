@@ -95,7 +95,13 @@ cd ${VIRTUAL_ENV}/bin
 # Use forked Numpy 1.8.x maintenance branch. patched to fix
 # Numpy issue numpy/numpy#4583
 #
-./pip install https://github.com/CellProfiler/numpy/archive/maintenance/1.8.x.tar.gz
+NUMPY_DIR=${HBPREFIX}/Cellar/numpy
+rm -rf $NUMPY_DIR
+mkdir $NUMPY_DIR
+curl -L https://github.com/CellProfiler/numpy/archive/maintenance/1.8.x.tar.gz | tar zx -C $NUMPY_DIR --strip-components=1
+cd $NUMPY_DIR
+python setup.py build install
+cd ${VIRTUAL_ENV}/bin
 ./pip install scipy==0.13.2
 ./pip install Cython==0.15.1
 ./pip install nose==1.1.2
