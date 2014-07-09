@@ -91,7 +91,11 @@ export HBPREFIX=`${HOMEBREW_BREW_FILE} --prefix`
 cd ${VIRTUAL_ENV}/bin
 
 # numpy/scipy/Cython
-./pip install numpy==1.8.0
+#
+# Use forked Numpy 1.8.x maintenance branch. patched to fix
+# Numpy issue numpy/numpy#4583
+#
+./pip install git+https://github.com/CellProfiler/numpy@maintenance/1.8.x
 ./pip install scipy==0.13.2
 ./pip install Cython==0.15.1
 ./pip install nose==1.1.2
