@@ -27,10 +27,6 @@ class CellprofilerDev < Formula
   depends_on 'libjpeg'
   depends_on 'pkg-config' # missing on Snow Leopard?
 
-  # Pull in our own patched Numpy from our forked version of homebrew-python
-  # taps.
-  depends_on 'numpy'
-  depends_on 'scipy'
   # These are all modified to make sure they are universal.  In the
   # future, brew might allow us to have dependencies with options.
   depends_on 'libtiff-universal'
@@ -99,6 +95,8 @@ cd ${VIRTUAL_ENV}/bin
 # Use forked Numpy 1.8.x maintenance branch. patched to fix
 # Numpy issue numpy/numpy#4583
 #
+./pip install https://github.com/CellProfiler/numpy/archive/maintenance/1.8.x.tar.gz
+./pip install scipy==0.13.2
 ./pip install Cython==0.15.1
 ./pip install nose==1.1.2
 ./pip install pyzmq==2.2.0.1 --install-option=--zmq=bundled
