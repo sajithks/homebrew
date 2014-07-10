@@ -135,6 +135,10 @@ ARCH_FLAGS="-arch i386 -arch x86_64 -mmacosx-version-min=10.6" ./pip install MyS
 
 # backup for writing TIFFs in CP.  Note that it includes its own copy of libtiff.
 ./pip install 'svn+http://pylibtiff.googlecode.com/svn/trunk'
-
+# pylibtiff creates a python module to bind to libtiff when
+# it first imports. So we have to do that here. (CP build machine
+# creates the brew in one account, then accesses it in an account
+# that does not have permission to do this).
+python -c "import libtiff"
 # TODO: py2app fixups?  Still needed?
 exit 0
