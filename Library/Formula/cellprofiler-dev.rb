@@ -103,7 +103,7 @@ cd $NUMPY_DIR
 python setup.py build install
 cd ${VIRTUAL_ENV}/bin
 ./pip install scipy==0.13.2
-./pip install Cython==0.15.1
+./pip install Cython==0.20.2
 ./pip install nose==1.1.2
 ./pip install pyzmq==2.2.0.1 --install-option=--zmq=bundled
 ./pip install pytz
@@ -132,6 +132,10 @@ ARCH_FLAGS="-arch i386 -arch x86_64 -mmacosx-version-min=10.6" ./pip install MyS
 # install py2app & dependencies
 ./pip install macholib==1.5.1
 ./pip install py2app==0.7.3
+
+# Our Javabridge and Bio-Formats, for 2.1.2 and forward
+./pip install javabridge==1.0.7
+./pip install python-bioformats==1.0.2-1-g85fc716
 
 # backup for writing TIFFs in CP.  Note that it includes its own copy of libtiff.
 ./pip install 'svn+http://pylibtiff.googlecode.com/svn/trunk'
