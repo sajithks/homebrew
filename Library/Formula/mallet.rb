@@ -1,1 +1,0 @@
-../Taps/homebrew-science/mallet.rb

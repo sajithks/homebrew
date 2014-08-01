@@ -1,1 +1,0 @@
-../Taps/homebrew-science/dssp.rb

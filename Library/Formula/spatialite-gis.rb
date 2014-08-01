@@ -1,1 +1,0 @@
-../Taps/homebrew-science/spatialite-gis.rb

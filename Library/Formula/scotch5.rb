@@ -1,1 +1,0 @@
-../Taps/homebrew-science/scotch5.rb

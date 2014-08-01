@@ -1,1 +1,0 @@
-../Taps/homebrew-science/mtl.rb

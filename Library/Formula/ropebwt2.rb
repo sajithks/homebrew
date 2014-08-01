@@ -1,1 +1,0 @@
-../Taps/homebrew-science/ropebwt2.rb

@@ -1,1 +1,0 @@
-../Taps/homebrew-science/allpaths-lg.rb

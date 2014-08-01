@@ -1,1 +1,0 @@
-../Taps/homebrew-science/trans-abyss.rb

@@ -1,1 +1,0 @@
-../Taps/homebrew-science/hyphy.rb
