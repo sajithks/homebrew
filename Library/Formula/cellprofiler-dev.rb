@@ -129,8 +129,10 @@ ARCH_FLAGS="-arch i386 -arch x86_64 -mmacosx-version-min=10.6" ./pip install MyS
 
 # for py2app install
 ./pip install Mercurial==2.8.2
-# install py2app & dependencies
+# install py2app & dependencies 
+# (modulegraph >= 12 is incompatible with py2app<=0.9 at least )
 ./pip install macholib==1.5.1
+./pip install modulegraph=0.11.1
 ./pip install py2app==0.7.3
 
 # Our Javabridge and Bio-Formats, for 2.1.2 and forward
