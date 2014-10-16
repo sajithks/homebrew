@@ -107,6 +107,7 @@ cd ${VIRTUAL_ENV}/bin
 ./pip install nose==1.1.2
 ./pip install pyzmq==2.2.0.1 --install-option=--zmq=bundled
 ./pip install pytz
+./pip install scikit-learn==0.15.2
 
 # Create a nosetests that calls pythonw32
 /bin/cp `which nosetests` ./nosetestsw32
