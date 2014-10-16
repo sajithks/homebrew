@@ -133,12 +133,12 @@ ARCH_FLAGS="-arch i386 -arch x86_64 -mmacosx-version-min=10.6" ./pip install MyS
 # install py2app & dependencies 
 # (modulegraph >= 12 is incompatible with py2app<=0.9 at least )
 ./pip install macholib==1.5.1
-./pip install modulegraph=0.11.1
+./pip install modulegraph==0.11.1
 ./pip install py2app==0.7.3
 
 # Our Javabridge and Bio-Formats, for 2.1.2 and forward
 ./pip install javabridge==1.0.7
-./pip install python-bioformats==1.0.2-1-g85fc716
+./pip install python-bioformats==1.0.3
 
 # backup for writing TIFFs in CP.  Note that it includes its own copy of libtiff.
 ./pip install 'svn+http://pylibtiff.googlecode.com/svn/trunk'
